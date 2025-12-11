@@ -1,6 +1,9 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+let galleryBox;
+let isGalleryBox = false;
+
 export function createGallery(images) {
   const gallery = document.querySelector(".gallery");
 
@@ -20,6 +23,7 @@ export function createGallery(images) {
       item.classList.add("gallery-item");
 
       const link = document.createElement("a");
+      item.classList.add("gallery-item-link");
       link.setAttribute("href", largeImageURL);
       item.append(link);
 
@@ -59,12 +63,16 @@ export function createGallery(images) {
 
   gallery.append(...galleryArr);
 
-  const settings = {
-    captionsData: "alt",
-    captionDelay: 250,
-  };
-  let galleryBox = new SimpleLightbox(".gallery li a", settings);
-  galleryBox.refresh();
+  if (isGalleryBox) {
+    galleryBox.refresh();
+  } else {
+    const settings = {
+      captionsData: "alt",
+      captionDelay: 250,
+    };
+    galleryBox = new SimpleLightbox(".gallery li a", settings);
+    isGalleryBox = true;
+  }
 }
 
 export function clearGallery() {
@@ -82,4 +90,16 @@ export function showLoader() {
 export function hideLoader() {
   const loading = document.querySelector(".loader");
   loading.classList.toggle("visible");
+}
+
+export function showLoadMoreButton() {
+  const btnMore = document.querySelector(".btn-more");
+  if (!btnMore.classList.contains("viseble")) {
+    btnMore.classList.add("viseble");
+  }
+}
+
+export function hideLoadMoreButton() {
+  const btnMore = document.querySelector(".btn-more");
+  btnMore.classList.remove("viseble");
 }
